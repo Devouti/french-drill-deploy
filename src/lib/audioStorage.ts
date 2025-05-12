@@ -22,8 +22,8 @@ export async function loadAudioFiles(): Promise<Record<string, File>> {
   return map;
 }
 
-// Wipe all audio files
+// ✅ Fixed: Clear audio files
 export async function clearAudioFiles() {
   const fileKeys = await keys();
-  await Promise.all(fileKeys.map(del));
+  await Promise.all(fileKeys.map((key) => del(key))); // 👈 this is the important fix
 }
