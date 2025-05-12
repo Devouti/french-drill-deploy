@@ -29,15 +29,14 @@ export default function DashboardPage() {
     const raw = JSON.parse(localStorage.getItem('listeningTime') || '{}');
     const entries = Object.entries(raw).map(([date, seconds]) => ({
       date,
-      seconds,
+      seconds: Number(seconds), // ✅ Ensure seconds is a number
     }));
 
-    // Sort newest first
     const sorted = entries.sort((a, b) => b.date.localeCompare(a.date));
     setDailyData(sorted);
 
     const today = new Date();
-    const thisMonth = today.toISOString().slice(0, 7); // "YYYY-MM"
+    const thisMonth = today.toISOString().slice(0, 7);
     let monthly = 0;
     let allTime = 0;
     const weekTotals: Record<string, number> = {};
@@ -61,7 +60,6 @@ export default function DashboardPage() {
       <main className="p-6 max-w-3xl mx-auto">
         <h1 className="text-xl font-bold mb-4">📊 My Listening Stats</h1>
 
-        {/* 📈 Daily Chart */}
         <div className="h-64 mb-8 bg-white p-4 border rounded">
           <h2 className="text-sm font-semibold mb-2">Daily Listening Time</h2>
           <ResponsiveContainer width="100%" height="100%">
@@ -78,7 +76,6 @@ export default function DashboardPage() {
           </ResponsiveContainer>
         </div>
 
-        {/* 🗓️ Weekly Totals */}
         <div className="mb-6">
           <h2 className="font-semibold mb-2">🗓️ Weekly Totals</h2>
           <ul className="text-sm space-y-1">
@@ -92,7 +89,6 @@ export default function DashboardPage() {
           </ul>
         </div>
 
-        {/* 📅 Monthly + All Time Totals */}
         <div className="border-t pt-4 text-sm text-gray-700 space-y-1">
           <div>📅 Monthly Total: {formatTime(monthlyTotal)}</div>
           <div>⏱️ All Time Total: {formatTime(allTimeTotal)}</div>
